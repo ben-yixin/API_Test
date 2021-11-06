@@ -12,14 +12,6 @@ app.get('/', (req, res) => {
   res.status(200).sendFile(path.resolve(__dirname, 'views', "index.html"));
 });
 
-app.get('/', (req,res)=>{
-  const email = 'ben.zhang2124@gmail.com'
-  const key = 'kfc'
-  const url='https://tweakplan.com/JavaScriptDemoSubmission-1.0/candidates?email='+email+'&secret='+key;
-
-  res.json({})
-})
-
 app.post('/submit', (req,res)=>{
   const email = req.body.email
   const key = req.body.key
@@ -46,10 +38,14 @@ app.patch('/submit/:id', (req,res)=>{
   const id = req.params;
   const body = req.body;
   const url = 'https://tweakplan.com/JavaScriptDemoSubmission-1.0/candidates/'+id;
-  const update = {"repoURL":"https://github.com/ben-yixin","secret":"kfc"}
-  console.log(id)
-  console.log(body)
-  res.json(update)
+  const update = {"repoURL":"https://github.com/ben-yixin/API_Test","secret":"kfc"}
+  https.get(url,(response)=>{
+    console.log(response.statusCode);
+    response.on('data',(data)=>{
+
+      res.json(update)
+    })
+  })
 })
 
 app.all('*', (req,res)=>{
